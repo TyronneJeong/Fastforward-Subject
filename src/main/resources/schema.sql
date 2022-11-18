@@ -1,7 +1,7 @@
 -- Corporation Information Entity
 drop table if exists corp_info;
 create table corp_info (
-    stock_code varchar(8)  not null unique,
+    stock_code varchar(6)  not null unique,
     corp_name varchar(30) not null,
     constraint pk_corp_info primary key (
         stock_code,
