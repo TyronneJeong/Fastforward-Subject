@@ -1,0 +1,30 @@
+debug: false
+management.endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    com.fastforward: DEBUG
+  pattern:
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%'
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fastforward
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  sql.init.mode: always
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+service:
+  stock:
+    info:
+      url: https://query1.finance.yahoo.com/v8/finance/chart/{stockCode}.KS?interval=1d&range=5d
