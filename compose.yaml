@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: fastforward
+      POSTGRES_PASSWORD: password
+    restart: "no"
+    ports:
+      - "5432:5432"
+  app:
+    depends_on:
+      - db
+    image: maurois/dailyscraper
+    environment:
+      DB_HOST_ADDRESS: db
+    restart: "no"
+    ports:
+      - "8080:8080"

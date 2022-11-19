@@ -15,7 +15,7 @@ mybatis:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/fastforward
+    url: jdbc:postgresql://${DB_HOST_ADDRESS:127.0.0.1}:5432/fastforward
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
