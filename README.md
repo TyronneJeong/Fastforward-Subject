@@ -7,7 +7,7 @@
     docker-compose up
 
 ### 프로젝트 빌드
-#### jib 플러그인을 이용한 원격 resistry 갱신
+#### jib 플러그인을 이용한 원격 registry 갱신
 
     ./gradlew jib
 or
