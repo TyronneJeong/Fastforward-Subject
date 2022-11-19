@@ -17,13 +17,13 @@ or
 
 
 ### 사용도구
-- Spring Boot 2.0
+- Spring Boot 2.7.5
 - Gradle
-- MyBatis framewwork
-- Swagger
+- MyBatis framewwork 2.2.2
+- Swagger 3.0.0
 - JUnit 5.0
 - postgreSQL
-- JiB Plugin
+- JiB Plugin 3.3.1
 
 ### 스크린샷
 ![swagger](https://user-images.githubusercontent.com/11978687/202740337-db2479bf-6758-4c67-a167-8e304baebd89.png)
