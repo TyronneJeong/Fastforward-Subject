@@ -1,7 +1,7 @@
-package com.fastforward.dailyscraper.dao;
+package com.fastforward.dailyscraper.repository;
 
-import com.fastforward.dailyscraper.vo.StockInfoDto;
-import com.fastforward.dailyscraper.vo.DailyMarketAmountDto;
+import com.fastforward.dailyscraper.dto.StockInfoDto;
+import com.fastforward.dailyscraper.dto.DailyMarketAmountDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,9 +14,8 @@ public interface DailyScrapDao {
      *
      * @param stockCode
      * @return StockInfoDto
-     * @throws Exception
      */
-    public List<StockInfoDto> selectListStockInfoLast5Days(String stockCode) throws Exception;
+    public List<StockInfoDto> selectListStockInfoLast5Days(String stockCode);
 
     /**
      * selectDailyMarketAmount
@@ -24,9 +23,8 @@ public interface DailyScrapDao {
      *
      * @param dailyMarketAmountDto
      * @return DailyMarketAmountDto
-     * @throws Exception
      */
-    public DailyMarketAmountDto selectDailyMarketAmount(DailyMarketAmountDto dailyMarketAmountDto) throws Exception;
+    public DailyMarketAmountDto selectDailyMarketAmount(DailyMarketAmountDto dailyMarketAmountDto);
 
     /**
      * saveStockInfo
@@ -34,9 +32,8 @@ public interface DailyScrapDao {
      *
      * @param dailyMarketAmountDto
      * @return void
-     * @throws Exception
      */
-    public void saveDailyMarketAmount(DailyMarketAmountDto dailyMarketAmountDto) throws Exception;
+    public void saveDailyMarketAmount(DailyMarketAmountDto dailyMarketAmountDto);
 
     /**
      * updateDailyMarketAmount
@@ -44,8 +41,7 @@ public interface DailyScrapDao {
      *
      * @param dailyMarketAmountDto
      * @return void
-     * @throws Exception
      */
-    public void updateDailyMarketAmount(DailyMarketAmountDto dailyMarketAmountDto) throws Exception;
+    public void updateDailyMarketAmount(DailyMarketAmountDto dailyMarketAmountDto);
 
 }

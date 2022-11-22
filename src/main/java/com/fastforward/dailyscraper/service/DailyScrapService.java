@@ -1,6 +1,6 @@
 package com.fastforward.dailyscraper.service;
 
-import com.fastforward.dailyscraper.vo.StockInfoDto;
+import com.fastforward.dailyscraper.dto.StockInfoDto;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ public interface DailyScrapService {
      * @return
      * @throws Exception
      */
-    public List<StockInfoDto> getStockInfoLast5Days(String stockCode) throws Exception;
+    public List<StockInfoDto> getStockInfoLast5Days(String stockCode);
 }

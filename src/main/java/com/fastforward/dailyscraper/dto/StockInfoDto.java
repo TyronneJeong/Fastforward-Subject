@@ -1,9 +1,8 @@
-package com.fastforward.dailyscraper.vo;
+package com.fastforward.dailyscraper.dto;
 
 import lombok.*;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
 
 @Getter
 @Setter

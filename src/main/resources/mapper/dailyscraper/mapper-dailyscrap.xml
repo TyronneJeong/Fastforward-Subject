@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.fastforward.dailyscraper.dao.DailyScrapDao">
+<mapper namespace="com.fastforward.dailyscraper.repository.DailyScrapDao">
 
     <!-- 최근 5일간 주가 정보 조회 -->
-    <select id="selectListStockInfoLast5Days" parameterType="com.fastforward.dailyscraper.vo.StockInfoDto" resultType="com.fastforward.dailyscraper.vo.StockInfoDto">
+    <select id="selectListStockInfoLast5Days" parameterType="com.fastforward.dailyscraper.dto.StockInfoDto" resultType="com.fastforward.dailyscraper.dto.StockInfoDto">
         select a.post_date
              , a.stock_code
              , a.high
@@ -23,7 +23,7 @@
     </select>
 
     <!-- 일별 시장 가격 정보 등록 정보 조회 -->
-    <select id="selectDailyMarketAmount" parameterType="com.fastforward.dailyscraper.vo.DailyMarketAmountDto" resultType="com.fastforward.dailyscraper.vo.DailyMarketAmountDto">
+    <select id="selectDailyMarketAmount" parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto" resultType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
       select a.post_date
            , a.stock_code
            , a.high
@@ -38,7 +38,7 @@
     </select>
 
     <!-- 일별 시장 가격 정보 등록 -->
-    <insert id="saveDailyMarketAmount" parameterType="com.fastforward.dailyscraper.vo.DailyMarketAmountDto">
+    <insert id="saveDailyMarketAmount" parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
         insert into daily_market_amt
         (
               post_date
@@ -60,7 +60,7 @@
     </insert>
 
     <!-- 일별 시장 가격 정보 변경 -->
-    <update id="updateDailyMarketAmount" parameterType="com.fastforward.dailyscraper.vo.DailyMarketAmountDto">
+    <update id="updateDailyMarketAmount" parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
          update daily_market_amt
             set high        = #{high}
               , low         = #{low}

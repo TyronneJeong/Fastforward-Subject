@@ -1,7 +1,7 @@
 package com.fastforward.dailyscraper.controller;
 
 import com.fastforward.dailyscraper.service.DailyScrapService;
-import com.fastforward.dailyscraper.vo.StockInfoDto;
+import com.fastforward.dailyscraper.dto.StockInfoDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class DailyScrapController {
 
     @ApiOperation(value = "최근5일간 스크랩된 주가정보 조회", response = List.class)
     @GetMapping("/last5days")
-    public Response<List<StockInfoDto>> getStockInfoLast5Days(@RequestParam(name = "stockcode", required = true) String stockCode) throws Exception {
+    public Response<List<StockInfoDto>> getStockInfoLast5Days(@RequestParam(name = "stockcode", required = true) String stockCode) {
         return Response.success(dailyScrapService.getStockInfoLast5Days(stockCode));
     }
 }

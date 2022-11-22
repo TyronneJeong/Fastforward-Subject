@@ -1,4 +1,4 @@
-package com.fastforward.dailyscraper.vo;
+package com.fastforward.dailyscraper.dto;
 
 import lombok.*;
 
