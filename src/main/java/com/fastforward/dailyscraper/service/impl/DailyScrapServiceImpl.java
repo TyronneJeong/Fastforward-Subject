@@ -4,17 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fastforward.dailyscraper.constant.CommConst;
-import com.fastforward.dailyscraper.repository.DailyScrapDao;
-import com.fastforward.dailyscraper.service.DailyScrapService;
 import com.fastforward.dailyscraper.dto.DailyMarketAmountDto;
 import com.fastforward.dailyscraper.dto.StockInfoDto;
+import com.fastforward.dailyscraper.repository.DailyScrapDao;
+import com.fastforward.dailyscraper.service.DailyScrapService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -29,8 +28,6 @@ public class DailyScrapServiceImpl implements DailyScrapService {
     private final String STOCK_INFO_GATHERING_URL;
 
     private final DailyScrapDao dailyScrapDao;
-
-    private final RestTemplate restTemplate;
 
     private final ObjectMapper objectMapper;
 
@@ -49,7 +46,7 @@ public class DailyScrapServiceImpl implements DailyScrapService {
     @Transactional
     public List<StockInfoDto> getStockInfoLast5Days(String stockCode) {
         saveResponseDataToDB(getMarketInfoByStockCode(stockCode), stockCode);
-        return this.getStockInfoListLast5Days(stockCode);
+        return getStockInfoListLast5Days(stockCode);
     }
 
     /**
@@ -60,7 +57,7 @@ public class DailyScrapServiceImpl implements DailyScrapService {
      * @return String
      */
     private String getMarketInfoByStockCode(String stockCode) {
-        return restTemplate.getForEntity(makeUrlByCode(stockCode), String.class).getBody();
+        return WebClient.create(makeUrlByCode(stockCode)).get().retrieve().bodyToMono(String.class).block();
     }
 
     /**
@@ -77,26 +74,19 @@ public class DailyScrapServiceImpl implements DailyScrapService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        // FIXME 오브젝트 매퍼 호출 1개로 줄이기. 고민필요.
-        JsonNode result = node.at("/chart/result").get(0);
-        JsonNode timestamp = result.at("/timestamp");
-        JsonNode quote = result.at("/indicators/quote").get(0);
-        JsonNode low = quote.at("/low");
-        JsonNode high = quote.at("/high");
-        JsonNode open = quote.at("/open");
-        JsonNode close = quote.at("/close");
-        JsonNode volume = quote.at("/volume");
+        JsonNode timestamp = node.path("chart").path("result").get(0).path("timestamp");
+        JsonNode values = node.path("chart").path("result").get(0).path("indicators").path("quote").get(0);
 
         for (int ix = 0; ix < timestamp.size(); ix++) {
-            this.saveDailyMarketAmountWithoutDup(DailyMarketAmountDto.builder()
-                    .postDate(convertEpochTimeToStrDate(timestamp.get(ix).asLong()))
-                    .stockCode(stockCode)
-                    .high(high.get(ix).bigIntegerValue())
-                    .low(low.get(ix).bigIntegerValue())
-                    .open(open.get(ix).bigIntegerValue())
-                    .close(close.get(ix).bigIntegerValue())
-                    .volume(volume.get(ix).bigIntegerValue())
-                    .build());
+            saveDailyMarketAmountWithoutDup(DailyMarketAmountDto.builder()
+                .postDate(convertEpochTimeToStrDate(timestamp.get(ix).asLong()))
+                .stockCode(stockCode)
+                .high(values.path("high").get(ix).bigIntegerValue())
+                .low(values.path("low").get(ix).bigIntegerValue())
+                .open(values.path("open").get(ix).bigIntegerValue())
+                .close(values.path("close").get(ix).bigIntegerValue())
+                .volume(values.path("volume").get(ix).bigIntegerValue())
+                .build());
         }
     }
 
@@ -120,9 +110,9 @@ public class DailyScrapServiceImpl implements DailyScrapService {
      * @return void
      */
     private void saveDailyMarketAmountWithoutDup(DailyMarketAmountDto dailyMarketAmountDto) {
-        if (this.checkUpdateableData(dailyMarketAmountDto) == DataExistsType.NOT_EXISTS) {
+        if (checkUpdateableData(dailyMarketAmountDto) == DataExistsType.NOT_EXISTS) {
             dailyScrapDao.saveDailyMarketAmount(dailyMarketAmountDto);
-        } else if (this.checkUpdateableData(dailyMarketAmountDto) == DataExistsType.EXISTS) {
+        } else if (checkUpdateableData(dailyMarketAmountDto) == DataExistsType.EXISTS) {
             dailyScrapDao.updateDailyMarketAmount(dailyMarketAmountDto);
         }
     }
