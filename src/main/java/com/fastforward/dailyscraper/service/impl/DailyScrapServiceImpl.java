@@ -24,8 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class DailyScrapServiceImpl implements DailyScrapService {
+
     @Value("${service.stock.info.url}")
-    private final String STOCK_INFO_GATHERING_URL;
+    private String stockInfoGatheringUrl;
 
     private final DailyScrapDao dailyScrapDao;
 
@@ -151,6 +152,6 @@ public class DailyScrapServiceImpl implements DailyScrapService {
      * @return String
      */
     private String makeUrlByCode(String stockCode) {
-        return STOCK_INFO_GATHERING_URL.replace(CommConst.URL_REPLACE_KEYWORD, stockCode);
+        return stockInfoGatheringUrl.replace(CommConst.URL_REPLACE_KEYWORD, stockCode);
     }
 }
