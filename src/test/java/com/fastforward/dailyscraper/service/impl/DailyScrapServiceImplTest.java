@@ -10,13 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class DailyScrapServiceImplTest {
 
-    @Autowired
-    private DailyScrapService dailyScrapService;
+  @Autowired
+  private DailyScrapService dailyScrapService;
 
-    @DisplayName("삼전전자 최근 5일간 주식 시장 가격 조회")
-    @Test
-    void getStockInfoLast5Days() {
-        Assertions.assertDoesNotThrow(() ->
-                dailyScrapService.getStockInfoLast5Days("005930"));
-    }
+  @DisplayName("삼전전자 최근 5일간 주식 시장 가격 조회")
+  @Test
+  void getStockInfoLast5Days() {
+    Assertions.assertDoesNotThrow(() ->
+        dailyScrapService.getStockInfoLast5Days("005930"));
+  }
 }

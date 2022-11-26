@@ -1,74 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fastforward.dailyscraper.repository.DailyScrapDao">
 
-    <!-- 최근 5일간 주가 정보 조회 -->
-    <select id="selectListStockInfoLast5Days" parameterType="com.fastforward.dailyscraper.dto.StockInfoDto" resultType="com.fastforward.dailyscraper.dto.StockInfoDto">
-        select a.post_date
-             , a.stock_code
-             , a.high
-             , a.low
-             , a.open
-             , a.close
-             , a.volume
-             , b.corp_name
-        from daily_market_amt a
-           , corp_info        b
-       where a.stock_code = b.stock_code
-         and a.stock_code = #{stockCode}
-         and a.post_date  between to_char(CURRENT_DATE - 5, 'yyyymmdd')
-                              and to_char(CURRENT_DATE, 'yyyymmdd')
-       order by a.post_date desc
-    </select>
+  <!-- 최근 5일간 주가 정보 조회 -->
+  <select id="selectListStockInfoLast5Days"
+    parameterType="com.fastforward.dailyscraper.dto.StockInfoDto"
+    resultType="com.fastforward.dailyscraper.dto.StockInfoDto">
+    select a.post_date
+         , a.stock_code
+         , a.high
+         , a.low
+         , a.open
+         , a.close
+         , a.volume
+         , b.corp_name
+    from daily_market_amt a
+       , corp_info b
+    where a.stock_code = b.stock_code
+      and a.stock_code = #{stockCode}
+      and a.post_date between to_char(CURRENT_DATE - 5, 'yyyymmdd')
+      and to_char(CURRENT_DATE, 'yyyymmdd')
+    order by a.post_date desc
+  </select>
 
-    <!-- 일별 시장 가격 정보 등록 정보 조회 -->
-    <select id="selectDailyMarketAmount" parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto" resultType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
-      select a.post_date
-           , a.stock_code
-           , a.high
-           , a.low
-           , a.open
-           , a.close
-           , a.volume
-        from daily_market_amt a
-       where a.stock_code = #{stockCode}
-         and a.post_date  = #{postDate}
-       limit 1
-    </select>
+  <!-- 일별 시장 가격 정보 등록 정보 조회 -->
+  <select id="selectDailyMarketAmount"
+    parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto"
+    resultType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
+    select a.post_date
+         , a.stock_code
+         , a.high
+         , a.low
+         , a.open
+         , a.close
+         , a.volume
+    from daily_market_amt a
+    where a.stock_code = #{stockCode}
+      and a.post_date = #{postDate} limit 1
+  </select>
 
-    <!-- 일별 시장 가격 정보 등록 -->
-    <insert id="saveDailyMarketAmount" parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
-        insert into daily_market_amt
-        (
-              post_date
-            , stock_code
-            , high
-            , low
-            , open
-            , close
-            , volume
-        ) values (
-             #{postDate}
+  <!-- 일별 시장 가격 정보 등록 -->
+  <insert id="saveDailyMarketAmount"
+    parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
+    insert into daily_market_amt
+    ( post_date
+    , stock_code
+    , high
+    , low
+    , open
+    , close
+    , volume)
+    values ( #{postDate}
            , #{stockCode}
            , #{high}
            , #{low}
            , #{open}
            , #{close}
-           , #{volume}
-        )
-    </insert>
+           , #{volume})
+  </insert>
 
-    <!-- 일별 시장 가격 정보 변경 -->
-    <update id="updateDailyMarketAmount" parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
-         update daily_market_amt
-            set high        = #{high}
-              , low         = #{low}
-              , open        = #{open}
-              , close       = #{close}
-              , volume      = #{volume}
-          where post_date   = #{postDate}
-            and stock_code  = #{stockCode}
-    </update>
+  <!-- 일별 시장 가격 정보 변경 -->
+  <update id="updateDailyMarketAmount"
+    parameterType="com.fastforward.dailyscraper.dto.DailyMarketAmountDto">
+    update daily_market_amt
+    set high   = #{high}
+      , low    = #{low}
+      , open   = #{open}
+      , close  = #{close}
+      , volume = #{volume}
+    where post_date = #{postDate}
+      and stock_code = #{stockCode}
+  </update>
 
 </mapper>
